@@ -14,6 +14,8 @@ extern void (*ModLoader_WriteRelativeAddress)(void* const address, const void* c
 extern void (*ModLoader_WriteByte)(void* const address, const unsigned char value);
 extern void (*ModLoader_WriteWord)(void* const address, const unsigned short value);
 extern void (*ModLoader_WriteLong)(void* const address, const unsigned int value);
+extern void (*ModLoader_WriteStruct)(void* const address, const void* const value, const unsigned int size);
+extern void (*ModLoader_ReadStruct)(void* const address, void* value, const unsigned int size);
 extern void (*ModLoader_WriteWordBE)(void* const address, const unsigned short value);
 extern void (*ModLoader_WriteLongBE)(void* const address, const unsigned int value);
 extern void (*ModLoader_WriteJump)(void* const address, const void* const new_destination);

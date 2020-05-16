@@ -14,6 +14,8 @@ void (*ModLoader_WriteRelativeAddress)(void* const address, const void* const ne
 void (*ModLoader_WriteByte)(void* const address, const unsigned char value);
 void (*ModLoader_WriteWord)(void* const address, const unsigned short value);
 void (*ModLoader_WriteLong)(void* const address, const unsigned int value);
+void (*ModLoader_WriteStruct)(void* address, const void* const value, const unsigned int size);
+void (*ModLoader_ReadStruct)(void* const address, void* value, const unsigned int size);
 void (*ModLoader_WriteWordBE)(void* const address, const unsigned short value);
 void (*ModLoader_WriteLongBE)(void* const address, const unsigned int value);
 void (*ModLoader_WriteJump)(void* const address, const void* const new_destination);
@@ -57,6 +59,8 @@ __declspec(dllexport) void ModEntry(const HMODULE mod_loader_hmodule, const Sett
 	ModLoader_WriteByte = (void (*)(void* const, const unsigned char))GetProcAddress(mod_loader_hmodule, "WriteByte");
 	ModLoader_WriteWord = (void (*)(void* const, const unsigned short))GetProcAddress(mod_loader_hmodule, "WriteWord");
 	ModLoader_WriteLong = (void (*)(void* const, const unsigned int))GetProcAddress(mod_loader_hmodule, "WriteLong");
+	ModLoader_WriteStruct = (void (*)(void* const, const void* const, const unsigned int))GetProcAddress(mod_loader_hmodule, "WriteStruct");
+	ModLoader_ReadStruct = (void (*)(void* const, void*, const unsigned int))GetProcAddress(mod_loader_hmodule, "ReadStruct");
 	ModLoader_WriteWordBE = (void (*)(void* const, const unsigned short))GetProcAddress(mod_loader_hmodule, "WriteWordBE");
 	ModLoader_WriteLongBE = (void (*)(void* const, const unsigned int))GetProcAddress(mod_loader_hmodule, "WriteLongBE");
 	ModLoader_WriteJump = (void (*)(void* const, const void* const))GetProcAddress(mod_loader_hmodule, "WriteJump");

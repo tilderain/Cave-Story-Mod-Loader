@@ -54,7 +54,7 @@ void LoadDLLModLoader(void)
 __asm(
 "_ASM_LoadDLLModLoader:\n"
 "	call	_LoadDLLModLoader\n"
-"	movl	(0x498B20),%eax\n"
+"	movl	(0x441B60),%eax\n"
 "	ret\n"
 );
 extern char ASM_LoadDLLModLoader;
@@ -89,13 +89,13 @@ BOOLEAN WINAPI DllMain(IN HINSTANCE hDllHandle, IN DWORD nReason, IN LPVOID Rese
 
 	if (nReason == DLL_PROCESS_ATTACH)
 	{
-		if (!memcmp((void*)0x412429, (char[]){0xA1, 0x20, 0x8B, 0x49, 0x00}, 5))	// Make sure this is the right EXE (or that the code hasn't been tampered with)
+		if (!memcmp((void*)0x41CE79, (char[]){0xA1, 0x60, 0x1B, 0x44, 0x00}, 5))	// Make sure this is the right EXE (or that the code hasn't been tampered with)
 		{
 			// Write a call to ASM_LoadDLLModLoader to 0x412429
 			const HANDLE handle = GetCurrentProcess();
-			const unsigned int relative_address = (unsigned int)&ASM_LoadDLLModLoader - (0x412429 + 5);
-			WriteProcessMemory(handle, (void*)0x412429, &(unsigned char){0xE8}, 1, NULL);
-			WriteProcessMemory(handle, (void*)0x412429 + 1, &relative_address, 4, NULL);
+			const unsigned int relative_address = (unsigned int)&ASM_LoadDLLModLoader - (0x41CE79 + 5);
+			WriteProcessMemory(handle, (void*)0x41CE79, &(unsigned char){0xE8}, 1, NULL);
+			WriteProcessMemory(handle, (void*)0x41CE79 + 1, &relative_address, 4, NULL);
 		}
 	}
 

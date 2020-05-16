@@ -7,6 +7,8 @@ extern void WriteRelativeAddress(void* const address, const void* const new_dest
 extern void WriteByte(void* const address, const unsigned char value);
 extern void WriteWord(void* const address, const unsigned short value);
 extern void WriteLong(void* const address, const unsigned int value);
+extern void ReadStruct(void* const address, void* value, const unsigned int size);
+extern void WriteStruct(void* const address, const void* const value, const unsigned int size);
 extern void WriteWordBE(void* const address, const unsigned short value);
 extern void WriteLongBE(void* const address, const unsigned int value);
 extern void WriteJump(void* const address, const void* const new_destination);

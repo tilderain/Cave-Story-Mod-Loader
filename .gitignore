@@ -1,3 +1,14 @@
-bin/mod_loader_helper.o
+obj
 *.dll
-*.patch
+CS-Mod-Loader-*.zip
+**/data
+**/manual
+*.exe
+*.bin
+*.rect
+*.screen_mode
+**/play-records
+error.txt
+debug.txt
+*.html
+*.bak

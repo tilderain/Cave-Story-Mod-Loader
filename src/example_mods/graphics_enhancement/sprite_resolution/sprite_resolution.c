@@ -27,21 +27,21 @@ __asm (
 "	pushl	%eax\n"
 
 "	movl	_sprite_resolution_factor, %ecx\n"
-"	movl	-0x8C(%ebp), %eax\n"
+"	movl	-0x6C(%ebp), %eax\n"
 "	cdq\n"
 "	divl	%ecx\n"
-"	movl	%eax, -0x8C(%ebp)\n"
-"	movl	-0x90(%ebp), %eax\n"
+"	movl	%eax, -0x6C(%ebp)\n"
+"	movl	-0x70(%ebp), %eax\n"
 "	cdq\n"
 "	divl	%ecx\n"
-"	movl	%eax, -0x90(%ebp)\n"
+"	movl	%eax, -0x70(%ebp)\n"
 
 "	popl	%eax\n"
 "	call	*0x18(%eax)\n"
 "	movl	$0, -0x10(%ebp)\n"
 "	jmp	*1f\n"
 "1:\n"
-"	.long	0x40BC35\n"
+"	.long	0x423438\n"
 );
 extern char LoadBMP_FromFile_SurfaceCreationHijack;
 
@@ -56,14 +56,14 @@ __asm (
 "	cdq\n"
 "	divl	%ecx\n"
 "	movl	%eax, 0x14(%esp)\n"
-"	pushl	0x48C018\n"
+"	pushl	0x43B050\n"
 "	ret\n"
 );
 extern char LoadBMP_StretchBlitHijack;
 
 __asm (
 "_LoadBMP_FromResource_SurfaceCreationHijack:\n"
-"	pushl	%edx\n"
+"	pushl	%eax\n"
 
 "	movl	_sprite_resolution_factor, %ecx\n"
 "	movl	-0x8C(%ebp), %eax\n"
@@ -75,12 +75,12 @@ __asm (
 "	divl	%ecx\n"
 "	movl	%eax, -0x90(%ebp)\n"
 
-"	popl	%edx\n"
-"	call	*0x18(%edx)\n"
+"	popl	%eax\n"
+"	call	*0x18(%eax)\n"
 "	test	%eax, %eax\n"
 "	jmp	*1f\n"
 "1:\n"
-"	.long	0x40B8E6\n"
+"	.long	0x423432\n"
 );
 extern char LoadBMP_FromResource_SurfaceCreationHijack;
 
@@ -89,17 +89,17 @@ void SetSpriteResolution(void)
 	ModLoader_PrintDebug("Applying 'set sprite resolution' patch\n");
 
 	// Fix background tile sizes
-	ModLoader_WriteRelativeAddress((void*)0x420DAA + 1, LoadBackgroundSprite_hijack);
+	//ModLoader_WriteRelativeAddress((void*)0x420DAA + 1, LoadBackgroundSprite_hijack);
 
-	ModLoader_WriteJump((void*)0x40BC2B, &LoadBMP_FromFile_SurfaceCreationHijack);
-	ModLoader_WriteCall((void*)0x40BD04, &LoadBMP_StretchBlitHijack);
-	ModLoader_WriteByte((void*)0x40BD04 + 5, 0x90);
-	ModLoader_WriteCall((void*)0x40C142, &LoadBMP_StretchBlitHijack);
-	ModLoader_WriteByte((void*)0x40C142 + 5, 0x90);
-
-	ModLoader_WriteJump((void*)0x40B8E1, &LoadBMP_FromResource_SurfaceCreationHijack);
-	ModLoader_WriteCall((void*)0x40B9C5, &LoadBMP_StretchBlitHijack);
-	ModLoader_WriteByte((void*)0x40B9C5 + 5, 0x90);
-	ModLoader_WriteCall((void*)0x40BF0A, &LoadBMP_StretchBlitHijack);
-	ModLoader_WriteByte((void*)0x40BF0A + 5, 0x90);
+	//ModLoader_WriteJump((void*)0x42342D, &LoadBMP_FromFile_SurfaceCreationHijack);
+	ModLoader_WriteCall((void*)0x423534, &LoadBMP_StretchBlitHijack);
+	ModLoader_WriteByte((void*)0x423534 + 5, 0x90);
+	ModLoader_WriteCall((void*)0x42357D, &LoadBMP_StretchBlitHijack);
+	ModLoader_WriteByte((void*)0x42357D + 5, 0x90);
+	
+	//ModLoader_WriteJump((void*)0x40B8E1, &LoadBMP_FromResource_SurfaceCreationHijack);
+	//ModLoader_WriteCall((void*)0x40B9C5, &LoadBMP_StretchBlitHijack);
+	//ModLoader_WriteByte((void*)0x40B9C5 + 5, 0x90);
+	//ModLoader_WriteCall((void*)0x40BF0A, &LoadBMP_StretchBlitHijack);
+	//ModLoader_WriteByte((void*)0x40BF0A + 5, 0x90);
 }

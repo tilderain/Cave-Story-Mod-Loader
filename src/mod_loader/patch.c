@@ -19,8 +19,8 @@ static void WriteData(void* const address, const void* const value, const unsign
 		got_handle = true;
 		handle = GetCurrentProcess();
 	}
-
-	PrintPollution("%d bytes written at %p\n", size, address);
+	// having this slows down the game
+	//PrintPollution("%d bytes written at %p\n", size, address);
 	WriteProcessMemory(handle, address, value, size, NULL);
 }
 
@@ -43,6 +43,24 @@ __declspec(dllexport) void WriteWord(void* const address, const unsigned short v
 __declspec(dllexport) void WriteLong(void* const address, const unsigned int value)
 {
 	WriteData(address, &value, 4);
+}
+
+__declspec(dllexport) void WriteStruct(void* const address, const void* const value, const unsigned int size)
+{
+	WriteData(address, &value, size);
+}
+
+__declspec(dllexport) void ReadStruct(void* const address, void* value, const unsigned int size)
+{
+	static bool got_handle;
+	static HANDLE handle;
+
+	if (!got_handle)
+	{
+		got_handle = true;
+		handle = GetCurrentProcess();
+	}
+	ReadProcessMemory(handle, address, value, size, NULL);
 }
 
 __declspec(dllexport) void WriteWordBE(void* const address, const unsigned short value)

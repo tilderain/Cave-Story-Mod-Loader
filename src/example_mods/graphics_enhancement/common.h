@@ -16,6 +16,6 @@ extern unsigned int aspect_ratio_y;
 extern unsigned int window_upscale_factor;
 extern unsigned int sprite_resolution_factor;
 
-#define SCREEN_WIDTH ((signed int)(((240 * aspect_ratio_x) + (aspect_ratio_y - 1)) / aspect_ratio_y))
+#define SCREEN_WIDTH ((signed int)(((120 * aspect_ratio_x) + (aspect_ratio_y - 1)) / aspect_ratio_y))
 
 extern unsigned int ScreenWidthToTiles(const unsigned int tile_size);
