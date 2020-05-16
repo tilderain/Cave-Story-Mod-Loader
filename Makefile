@@ -2,17 +2,17 @@ MOD_LOADER_VERSION = v1.5
 COMMON_PATH = src/common
 
 ALT_MUSIC_USE_VORBISFILE = true
-ALT_MUSIC_USE_FLAC = true
+ALT_MUSIC_USE_FLAC = false
 ALT_MUSIC_USE_SNDFILE = false
-ALT_MUSIC_USE_OPENMPT = true
+ALT_MUSIC_USE_OPENMPT = false
 # Can be 'mini_al', 'SDL2', or 'Cubeb'
 ALT_MUSIC_BACKEND = mini_al
 
-CFLAGS = -O3 -static -Wall -Wextra -std=c99 -fno-ident
+CFLAGS = -O0 -Wall -Wextra -std=c99 -fno-ident
 ALL_CFLAGS = -I$(COMMON_PATH) -D'MOD_LOADER_VERSION="$(MOD_LOADER_VERSION)"' $(CFLAGS)
 
 SDL2_CFLAGS = $(shell sdl2-config --cflags)
-SDL2_LIBS = $(shell sdl2-config --static-libs)
+SDL2_LIBS = $(shell sdl2-config --static-libs) 
 
 MOD_LOADER_HELPER_OBJECT = bin/mod_loader_helper.o
 
@@ -36,37 +36,8 @@ GRAPHICS_ENHANCEMENT_FILES = \
 	$(GRAPHICS_ENHANCEMENT_PATH)/common.c \
 	$(GRAPHICS_ENHANCEMENT_PATH)/main.c \
 	$(GRAPHICS_ENHANCEMENT_PATH)/60fps/60fps.c \
-	$(GRAPHICS_ENHANCEMENT_PATH)/fullscreen/fullscreen.c \
-	$(GRAPHICS_ENHANCEMENT_PATH)/remove_sprite_alignment/remove_sprite_alignment.c \
-	$(GRAPHICS_ENHANCEMENT_PATH)/sprite_resolution/sprite_resolution.c \
-	$(GRAPHICS_ENHANCEMENT_PATH)/upscale_window/upscale_window.c \
-	$(GRAPHICS_ENHANCEMENT_PATH)/widescreen/black_bars.c \
-	$(GRAPHICS_ENHANCEMENT_PATH)/widescreen/drawsprite1_centred.c \
-	$(GRAPHICS_ENHANCEMENT_PATH)/widescreen/fix_subforeground_bug.c \
-	$(GRAPHICS_ENHANCEMENT_PATH)/widescreen/patch_beetle_and_basu.c \
-	$(GRAPHICS_ENHANCEMENT_PATH)/widescreen/patch_boss_explosion.c \
-	$(GRAPHICS_ENHANCEMENT_PATH)/widescreen/patch_boss_health.c \
-	$(GRAPHICS_ENHANCEMENT_PATH)/widescreen/patch_bute.c \
-	$(GRAPHICS_ENHANCEMENT_PATH)/widescreen/patch_camera.c \
-	$(GRAPHICS_ENHANCEMENT_PATH)/widescreen/patch_credits.c \
-	$(GRAPHICS_ENHANCEMENT_PATH)/widescreen/patch_exit_screen.c \
-	$(GRAPHICS_ENHANCEMENT_PATH)/widescreen/patch_fade.c \
-	$(GRAPHICS_ENHANCEMENT_PATH)/widescreen/patch_fps_counter.c \
-	$(GRAPHICS_ENHANCEMENT_PATH)/widescreen/patch_gaudi.c \
-	$(GRAPHICS_ENHANCEMENT_PATH)/widescreen/patch_inventory_screen.c \
-	$(GRAPHICS_ENHANCEMENT_PATH)/widescreen/patch_island_crash.c \
-	$(GRAPHICS_ENHANCEMENT_PATH)/widescreen/patch_loading_screen.c \
-	$(GRAPHICS_ENHANCEMENT_PATH)/widescreen/patch_map_screen.c \
-	$(GRAPHICS_ENHANCEMENT_PATH)/widescreen/patch_room_name_print.c \
-	$(GRAPHICS_ENHANCEMENT_PATH)/widescreen/patch_sand_zone_enemies.c \
-	$(GRAPHICS_ENHANCEMENT_PATH)/widescreen/patch_screen_flash.c \
-	$(GRAPHICS_ENHANCEMENT_PATH)/widescreen/patch_scrolling_clouds.c \
-	$(GRAPHICS_ENHANCEMENT_PATH)/widescreen/patch_teleport_screen.c \
-	$(GRAPHICS_ENHANCEMENT_PATH)/widescreen/patch_text_box.c \
-	$(GRAPHICS_ENHANCEMENT_PATH)/widescreen/patch_tile_drawers.c \
-	$(GRAPHICS_ENHANCEMENT_PATH)/widescreen/patch_title_screen.c \
-	$(GRAPHICS_ENHANCEMENT_PATH)/widescreen/widescreen.c
-
+	$(GRAPHICS_ENHANCEMENT_PATH)/sprite_resolution/sprite_resolution.c 
+	
 ALT_MUSIC_PATH = $(MODS_PATH)/alternate_music
 ALT_MUSIC_SOURCES = \
 	$(COMMON_PATH)/sprintfMalloc.c \
@@ -125,6 +96,7 @@ OUTPUT = \
 	bin/mods/wasd_input/wasd_input.dll \
 	bin/mods/ikachan_cursor/ikachan_cursor.dll \
 	bin/mods/debug_save/debug_save.dll \
+	bin/mods/multiplayer/multiplayer.dll \
 	bin/mods/graphics_enhancement/graphics_enhancement.dll \
 	bin/mods/3ds_hud/3ds_hud.dll \
 	bin/mods/disable_image_protection/disable_image_protection.dll \
@@ -171,6 +143,11 @@ bin/mods/ikachan_cursor/ikachan_cursor.dll: $(MOD_LOADER_HELPER_OBJECT) src/exam
 bin/mods/debug_save/debug_save.dll: $(MOD_LOADER_HELPER_OBJECT) src/example_mods/debug_save/main.c
 	@mkdir -p $(@D)
 	@$(CC) $(ALL_CFLAGS) -o $@ $^ $(LDFLAGS) $(LIBS) -shared
+	@strip $@ --strip-unneeded
+	
+bin/mods/multiplayer/multiplayer.dll: $(MOD_LOADER_HELPER_OBJECT) src/example_mods/multiplayer/main.c
+	@mkdir -p $(@D)
+	@$(CC) $(ALL_CFLAGS) -o $@ $^ $(LDFLAGS) $(LIBS) -lSDL2 -lSDL2main -lSDL2_net -lws2_32 -shared
 	@strip $@ --strip-unneeded
 
 bin/mods/graphics_enhancement/graphics_enhancement.dll: $(MOD_LOADER_HELPER_OBJECT) $(GRAPHICS_ENHANCEMENT_FILES)
